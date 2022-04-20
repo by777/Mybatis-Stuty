@@ -2,11 +2,36 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--namespace bind a DAO/USER interface-->
-<mapper namespace="com.bai.dao.UserDao">
+<!--namespace bind a DAO/USER interface (same name)-->
+<mapper namespace="com.bai.dao.UserMapper">
     <!--    id == UserDaoImpl, resultType User instead List<User>-->
     <select id="getUserList" resultType="com.bai.pojo.User">
         select *
         from mybatis.user
     </select>
+
+    <select id="getUserById" parameterType="int" resultType="com.bai.pojo.User">
+        select *
+        from mybatis.user
+        where id = #{id}
+    </select>
+
+    <insert id="addUser" parameterType="com.bai.pojo.User">
+        insert into mybatis.user(id, name, pwd)
+        values (#{id}, #{name}, #{pwd});
+    </insert>
+    <!--    NOTE: use #  not $ !-->
+    <update id="updateUser" parameterType="com.bai.pojo.User">
+
+        update mybatis.user
+        set name=#{name},
+            pwd=#{pwd}
+        where id = #{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete
+        from mybatis.user
+        where id = #{id};
+    </delete>
 </mapper>
