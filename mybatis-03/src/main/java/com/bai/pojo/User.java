@@ -1,19 +1,21 @@
 package com.bai.pojo;
 
+import org.apache.ibatis.type.Alias;
+
 // 实体类
 //@Alias("user")通过注解可以设置别名，但是要先设置包扫描
 public class User {
     private int id;
     private String name;
-    private String password;
+    private String pwd;
 
     public User() {
     }
 
-    public User(int id, String name, String password) {
+    public User(int id, String name, String pwd) {
         this.id = id;
         this.name = name;
-        this.password = password;
+        this.pwd = pwd;
     }
 
     public int getId() {
@@ -32,12 +34,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
+                ", pwd='" + pwd + '\'' +
                 '}';
     }
 }

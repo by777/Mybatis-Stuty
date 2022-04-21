@@ -5,7 +5,7 @@
 <!--namespace bind a DAO/USER interface (same name)-->
 <mapper namespace="com.bai.dao.UserMapper">
     <!--    id == UserDaoImpl, resultType User instead List<User>-->
-    <select id="getUserList" resultType="com.bai.pojo.User">
+    <select id="getUserList" resultType="User">
         select *
         from mybatis.user
     </select>
@@ -31,21 +31,5 @@
         where id = #{id};
     </delete>
 
-    <insert id="addUser2" parameterType="Map">
-        insert into mybatis.user (id, password)
-        values (#{uid}, #{password});
-    </insert>
 
-    <select id="getUserById2" parameterType="Map" resultType="com.bai.pojo.User">
-        select *
-        from mybatis.user
-        where id = #{id}
-          and name = #{name};
-    </select>
-
-    <select id="getUserLike" resultType="com.bai.pojo.User">
-        select *
-        from mybatis.user
-        where name like #{value};
-    </select>
 </mapper>

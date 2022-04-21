@@ -18,13 +18,15 @@ public class UserDaoTest {
             // 方式1：getMapper
             //UserDao userDao = sqlSession.getMapper(UserDao.class);
             UserMapper userDao = sqlSession.getMapper(UserMapper.class); // 也要在核心配置文件绑定
-            User user1 = userDao.getUserById(1);
-            // User{id=1, name='hdehe', password='null'}
-            // 这是因为sql语句实际上是select id, name, pwd from mybatis.user where id = 1;
-            // 所以可以起别名：select id, name, pwd as password from mybatis.user where id = 1;
-            // 或者 通过ResultMap来解决
-            System.out.println(user1);
-
+            List<User> userList = userDao.getUserList();
+            for (User user : userList) {
+                System.out.println(user);
+            }
+            // 方式2：不推荐
+//            List<User> userList1 = sqlSession.selectList("com.bai.dao.UserDao.getUserList");
+//            for (User user : userList1) {
+//                System.out.println(user);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
 
