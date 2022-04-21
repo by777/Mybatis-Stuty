@@ -6,6 +6,12 @@
 <configuration>
     <properties resource="db.properties"/>
 
+    <typeAliases>
+        <!--        alias class name setting-->
+        <typeAlias type="com.bai.pojo.User" alias="User"/>
+        <!--or auto scan package, and mapper.xml  use user(recommend) instead User-->
+        <package name="com.bai"/>
+    </typeAliases>
 
     <environments default="test">
         <environment id="development">

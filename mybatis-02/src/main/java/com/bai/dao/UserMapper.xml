@@ -5,7 +5,7 @@
 <!--namespace bind a DAO/USER interface (same name)-->
 <mapper namespace="com.bai.dao.UserMapper">
     <!--    id == UserDaoImpl, resultType User instead List<User>-->
-    <select id="getUserList" resultType="com.bai.pojo.User">
+    <select id="getUserList" resultType="User">
         select *
         from mybatis.user
     </select>
@@ -31,5 +31,5 @@
         where id = #{id};
     </delete>
 
-    
+
 </mapper>
