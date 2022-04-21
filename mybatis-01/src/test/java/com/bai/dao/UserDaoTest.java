@@ -5,7 +5,9 @@ import com.bai.utils.MybatisUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserDaoTest {
     @Test
@@ -85,4 +87,57 @@ public class UserDaoTest {
         sqlSession.close();
     }
 
+    @Test
+    public void addUser2() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        // 键只要于xml中保持一致就可以了，注意xml中参数类型是Map而不是map
+        map.put("uid", 117);
+
+        // 通过map可以随意制造参数，通过User需要把所有参数new出来一个完整的对象
+        // map.put("username", "XXXX");
+        map.put("pwd", "XXXX");
+        userMapper.addUser2(
+                map
+        );
+        sqlSession.commit();
+        sqlSession.close();
+    }
+
+    @Test
+    public void getUserById2() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id", 2);
+        map.put("name", "哈哈");
+        User user = userMapper.getUserById2(map);
+        sqlSession.close();
+    }
+
+    @Test
+    public void getUserLike() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        List<User> userList = userMapper.getUserLike("%bx%");
+        for (User user : userList) {
+            System.out.println(user);
+        }
+        System.out.println();
+
+        List<User> userList1 = userMapper.getUserLike("%bx");
+        for (User user : userList1) {
+            System.out.println(user);
+        }
+        System.out.println();
+
+        List<User> userList2 = userMapper.getUserLike("bx%");
+        for (User user : userList2) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
 }

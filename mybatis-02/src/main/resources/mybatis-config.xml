@@ -4,7 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!--core conf-->
 <configuration>
-    <environments default="development">
+    <properties resource="db.properties"/>
+
+
+    <environments default="test">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
@@ -15,6 +18,18 @@
                 <property name="password" value="123456"/>
             </dataSource>
         </environment>
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url"
+                          value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+
     </environments>
     <!--    every mapper.xml need register at mybatis.xml core config file-->
     <mappers>

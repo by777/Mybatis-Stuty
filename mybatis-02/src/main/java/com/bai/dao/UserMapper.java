@@ -22,10 +22,4 @@ public interface UserMapper {
     // 删除用户
     int deleteUser(int id);
 
-    // 万能map
-    int addUser2(Map<String, Object> map);
-
-    User getUserById2(Map<String, Object> map);
-
-    List<User> getUserLike(String value);
 }
