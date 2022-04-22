@@ -150,8 +150,10 @@ limit startIndex, pagesize;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private int id;
-    private String name;
-    private String pwd;
+   private int id;
+   private String name;
+   private String pwd;
 }
 ```
+
+# P19 复杂查询条件构建
