@@ -52,4 +52,54 @@ SqlSession：
 
 # P10
 
-解决属性名于字段名不一致的问题
+ResultMap解决属性名于字段名不一致的问题
+
+# P11 日志工厂
+
+如果一个sq语句出现来的异常，曾经sout和debug，用日志工厂也可实现。
+
+# P12 log4j
+
+1. 先导入log4j的包
+   在mybatis-04的pom.xml导入依赖
+   ```xml
+   <dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+   </dependencies>
+   ```
+2. 配置文件：resources/log4j.properties
+   ```properties
+   log4j.rootLogger=DEBUG,console,file
+   # 控制台
+   log4j.appender.console=org.apache.log4j.ConsoleAppender
+   log4j.appender.console.Target=System.out
+   log4j.appender.console.Threshold=DEBUG
+   log4j.appender.console.layout=org.apache.log4j.PatternLayout
+   log4j.appender.console.layout.ConversionPattern=[%c]-%m%n
+   # 文件
+   log4j.appender.file=org.apache.log4j.RollingFileAppender
+   log4j.appender.file.File=./log/bai.log
+   log4j.appender.file.MaxFileSize=10mb
+   log4j.appender.file.Threshold=DEBUG
+   log4j.appender.file.layout=org.apache.log4j.PatternLayout
+   log4j.appender.file.layout.ConversionPattern=[%p]-[%d{yy-MM-dd}][%c]%m%n
+   # 输出级别
+   log4j.logger.org.mybatis=DEBUG
+   log4j.logger.java.sql=DEBUG
+   log4j.logger.java.sql.Statement=DEBUG
+   log4j.logger.java.sql.ResultSet=DEBUG
+   log4j.logger.java.sql.PreparedStatement=DEBUG
+   ```
+3. 配置log4j的日志实现（mybatis-config.xml）
+   ```xml
+
+   <settings>
+           <!--        <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+           <setting name="logImpl" value="LOG4J"/>
+   </settings>
+   ```
+4. 使用
