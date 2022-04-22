@@ -5,6 +5,12 @@
 <!--namespace bind a DAO/USER interface (same name)-->
 <mapper namespace="com.bai.dao.UserMapper">
     <!--    id == UserDaoImpl, resultType User instead List<User>-->
+    <resultMap id="UserMap" type="User">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pwd" property="pwd"/>
+    </resultMap>
+
     <select id="getUserList" resultType="User">
         select *
         from mybatis.user
@@ -31,5 +37,10 @@
         where id = #{id};
     </delete>
 
+    <select id="getUserByLimit" parameterType="Map" resultMap="UserMap">
+        select *
+        from mybatis.user
+        limit #{startIndex}, #{pageSize};
+    </select>
 
 </mapper>

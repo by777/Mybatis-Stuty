@@ -103,3 +103,18 @@ ResultMap解决属性名于字段名不一致的问题
    </settings>
    ```
 4. 使用
+
+# P12 Limit分页
+
+```sql
+   select *
+   from mybatis.user
+   limit startIndex, pagesize;
+select *
+from mybatis.user
+limit 0, 5;
+```
+
+# p15 使用注解开发
+
+面向接口编程。使用注解编程，去除mapper.xml。

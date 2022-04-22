@@ -3,6 +3,7 @@ package com.bai.dao;
 import com.bai.pojo.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     // 查询全部用户
@@ -20,5 +21,8 @@ public interface UserMapper {
 
     // 删除用户
     int deleteUser(int id);
+
+    // 分页
+    List<User> getUserByLimit(Map<String, Integer> map);
 
 }

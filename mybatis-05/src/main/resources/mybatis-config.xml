@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--core conf-->
+<configuration>
+    <properties resource="db.properties"/>
+    <settings>
+        <!--        <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <typeAliases>
+        <!--        alias class name setting-->
+        <!--        <typeAlias type="com.bai.pojo.User" alias="User"/>-->
+        <!--or auto scan package, and mapper.xml  use user(recommend) instead User-->
+        <package name="com.bai.pojo"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+
+
+    </environments>
+    <!--    every mapper.xml need register at mybatis.xml core config file-->
+    <mappers>
+        <mapper class="com.bai.dao.UserMapper"/>
+    </mappers>
+
+</configuration>

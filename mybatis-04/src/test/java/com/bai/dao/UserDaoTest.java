@@ -49,4 +49,19 @@ public class UserDaoTest {
         logger.error("error:进入了log4jTest方法");
         logger.warn("warn:进入了log4jTest方法");
     }
+
+    @Test
+    public void getUserByLimit() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper userDao = sqlSession.getMapper(UserMapper.class); // 也要在核心配置文件绑定
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map.put("startIndex", 0);
+        map.put("pageSize", 3);
+
+        List<User> userList = userDao.getUserByLimit(map);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
 }
