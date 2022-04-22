@@ -107,14 +107,51 @@ ResultMap解决属性名于字段名不一致的问题
 # P12 Limit分页
 
 ```sql
-   select *
-   from mybatis.user
-   limit startIndex, pagesize;
 select *
 from mybatis.user
-limit 0, 5;
+limit startIndex, pagesize;
 ```
 
 # p15 使用注解开发
 
 面向接口编程。使用注解编程，去除mapper.xml。
+
+@Param():
+
+* 使用基本类型的参数或者String类型，需要加上
+* 引用类型不需要加
+* 如果只有一个基本类型的话，可以忽略（不建议）
+* 在SQL拼接字符串引用的就是这个Param
+
+# P18 Lombok
+
+一个java库，插件，构建工具。
+不用再写get/set方法，只需要写一个注解就可以了。
+
+1. idea中安装Lombok插件（可能自带）
+2. mvn导包
+
+```xml
+
+<dependencies>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.10</version>
+    </dependency>
+</dependencies>
+```
+
+3. 重写pojo
+
+```java
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
+    private int id;
+    private String name;
+    private String pwd;
+}
+```

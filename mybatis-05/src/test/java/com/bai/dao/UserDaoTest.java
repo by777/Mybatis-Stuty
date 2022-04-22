@@ -20,4 +20,45 @@ public class UserDaoTest {
         }
         sqlSession.close();
     }
+
+    @Test
+    public void testAnnotate() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 底层主要应用反射
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user1 = mapper.getUserById(1);
+        System.out.println(user1);
+        sqlSession.close();
+    }
+
+    @Test
+    public void testAddUser() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 底层主要应用反射
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int res = mapper.addUser(new User(1100, "hello", "mybatis"));
+        System.out.println(res);
+        sqlSession.close();
+    }
+
+
+    @Test
+    public void testUpdateUser() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 底层主要应用反射
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int res = mapper.updateUser(new User(1, "hello", "mybatis"));
+        System.out.println(res);
+        sqlSession.close();
+    }
+
+    @Test
+    public void testDeleteUser() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 底层主要应用反射
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int res = mapper.deleteUser(100);
+        System.out.println(res);
+        sqlSession.close();
+    }
 }
