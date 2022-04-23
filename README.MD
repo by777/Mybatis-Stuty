@@ -204,3 +204,19 @@ VALUES ('5', '小王', '1');
 javaType：用来指定实体类中属性的类型
 
 ofType：指定映射到List或者集合中的pojo类型。（泛型的约束类型）
+
+# P22 动态SQL
+
+if choose trim foreach
+
+```sql
+CREATE TABLE `blog`
+(
+    `id`          VARCHAR(50)  NOT NULL COMMENT '博客id',
+    `title`       VARCHAR(100) NOT NULL COMMENT '博客标题',
+    `author`      VARCHAR(30)  NOT NULL COMMENT '博客作者',
+    `create_time` DATETIME     NOT NULL COMMENT '创建时间',
+    `views`       INT(30)      NOT NULL COMMENT '浏览量'
+) ENGINE = INNODB
+  DEFAULT CHARSET = utf8;
+```
