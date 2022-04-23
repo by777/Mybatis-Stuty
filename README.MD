@@ -168,7 +168,7 @@ CREATE TABLE `teacher`
   DEFAULT CHARSET = utf8
 
 INSERT INTO teacher(`id`, `name`)
-VALUES (1, '秦老师');
+VALUES (1, '白老师');
 
 CREATE TABLE `student`
 (
@@ -196,3 +196,11 @@ VALUES ('5', '小王', '1');
 
 + 子查询
 + 连表查询
+
+关联-association：多对一
+
+集合-collection：一对多
+
+javaType：用来指定实体类中属性的类型
+
+ofType：指定映射到List或者集合中的pojo类型。（泛型的约束类型）
