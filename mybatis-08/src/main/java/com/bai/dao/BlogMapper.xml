@@ -7,4 +7,48 @@
         insert into mybatis.blog(id, title, author, create_time, views)
         values (#{id}, #{title}, #{author}, #{create_time}, #{views});
     </insert>
+
+    <select id="queryBlogIF" parameterType="map" resultType="Blog">
+        select *
+        from mybatis.blog
+        where true
+        <if test="title != null">
+            and title=#{title}
+        </if>
+        <if test="author != null">
+            and author=#{author}
+        </if>
+    </select>
+    <!--choose-when等同于switch-case，单分支-->
+    <select id="queryBlogChoose" parameterType="map" resultType="Blog">
+        select *
+        from mybatis.blog
+        <where>
+            <choose>
+                <when test="title != null">
+                    title=#{title}
+                </when>
+                <when test="author != null">
+                    and author=#{author}
+                </when>
+                <otherwise>
+                    and views=#{views}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateBlog" parameterType="map">
+        update mybatis.blog
+        <set>
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="author!=null">
+                author=#{author}
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
 </mapper>

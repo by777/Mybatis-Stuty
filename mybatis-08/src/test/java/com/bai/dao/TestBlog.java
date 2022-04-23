@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TestBlog {
@@ -43,5 +45,48 @@ public class TestBlog {
         blogMapper.addBlog(blog);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Test
+    public void testQueryBlogIF() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+
+        HashMap map = new HashMap();
+
+//        List<Blog> blogList = blogMapper.queryBlogIF(map);
+//        for (Blog blog : blogList) {
+//            System.out.println(blog);
+//        }
+
+        map.put("title", "Java 如此简单");
+//        List<Blog> blogList1 = blogMapper.queryBlogIF(map);
+//        for (Blog blog : blogList1) {
+//            System.out.println(blog);
+//        }
+
+        map.put("author", "Vu Bai");
+//        List<Blog> blogList2 = blogMapper.queryBlogIF(map);
+//        for (Blog blog : blogList2) {
+//            System.out.println(blog);
+//        }
+        map.put("views", 1000);
+        List<Blog> blogList3 = blogMapper.queryBlogChoose(map);
+        for (Blog blog : blogList3) {
+            System.out.println(blog);
+        }
+        sqlSession.close();
+    }
+
+    @Test
+    public void testUpdateSet() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+        HashMap map = new HashMap();
+        map.put("author", "BBBBB");
+        map.put("id", "5d390ae750ff45399e985d15b77767f1");
+        map.put("title", "如此简单");
+        int res = blogMapper.updateBlog(map);
+        System.out.println(res);
     }
 }
