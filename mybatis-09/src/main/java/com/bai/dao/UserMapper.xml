@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bai.dao.UserMapper">
     <!--    开启二级缓存-->
-    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
-
+    <!--    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>-->
+    <!--    也使用ehcache，强大之处可以自定义配置东西-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
     <select id="queryUserById" parameterType="_int" resultType="User">
         select *
         from mybatis.user

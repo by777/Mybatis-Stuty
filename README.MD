@@ -2,7 +2,7 @@
 
 https://www.bilibili.com/video/BV1NE411Q7Nx?p=3&spm_id_from=pageDriver
 
-参考链接：
+参考文档链接：
 
 https://mybatis.org/mybatis-3/zh/getting-started.html
 
@@ -52,16 +52,15 @@ SqlSession：
 
 # P10
 
-ResultMap解决属性名于字段名不一致的问题
+ResultMap解决属性名于字段名不一致的问题（property-column）
 
 # P11 日志工厂
-
-如果一个sq语句出现来的异常，曾经sout和debug，用日志工厂也可实现。
 
 # P12 log4j
 
 1. 先导入log4j的包
-   在mybatis-04的pom.xml导入依赖
+
+在mybatis-04的pom.xml导入依赖
 
 ```xml
 
@@ -119,7 +118,7 @@ limit startIndex, pagesize;
 
 # p15 使用注解开发
 
-面向接口编程。使用注解编程，去除mapper.xml。
+面向接口编程。使用注解编写简单sql，省去mapper.xml。
 
 @Param():
 
@@ -212,7 +211,7 @@ ofType：指定映射到List或者集合中的pojo类型。（泛型的约束类
 
 # P22 动态SQL
 
-if choose trim foreach
+[if choose trim foreach]标签
 
 ```sql
 CREATE TABLE `blog`
@@ -270,7 +269,7 @@ public class TestBlog {
 
 # P24 动态SQL常用标签
 
-先在Mysql中写出完整的SQL，再去修改成相应的动态SQL实现
+想法步骤：先在Mysql中写出完整的SQL，再去修改成相应的动态SQL实现
 
 利用where标签：
 
@@ -283,17 +282,17 @@ public class TestBlog {
       <!--            使用where标签自动去除多余的and，但不主动添加            -->
       <if test="author!=null">
          <!--           这里的and会自动去除            -->
-            and title=#{title}
-        </if>
-        <if test="author != null">
-            <!--           这里的and不能省略            -->
-            and author=#{author}
-        </if>
-    </where>
+         and title=#{title}
+      </if>
+      <if test="author != null">
+         <!--           这里的and不能省略            -->
+         and author=#{author}
+      </if>
+   </where>
 </select>
 ```
 
-\<set>\<where>都有一个父级元素\<trim>，使用trim定制元素的一些功能，
+\<set>\<where>都有一个父级元素\<trim>，可以使用trim定制元素的一些功能，
 
 ```xml
 
@@ -403,3 +402,16 @@ public class TestBlog {
 
 <cache eviction="LRU | FIFO | SOFT | WEAK" flushInterval="60000" size="512" readOnly="true"/>
 ```
+
+# P30 自定义缓存Ehcache
+
+```xml
+
+<dependency>
+   <groupId>org.mybatis.caches</groupId>
+   <artifactId>mybatis-ehcache</artifactId>
+   <version>1.1.0</version>
+</dependency>
+```
+
+自己可以实现，比较难。
