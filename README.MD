@@ -281,3 +281,34 @@ public class TestBlog {
     </where>
 </select>
 ```
+
+<set><where>都有一个父级元素<trim>，使用trim定制元素的一些功能，
+
+```xml
+
+<demo>
+    <trim prefix="WHERE" prefixOverrides="AND | OR" suffix="" suffixOverrides="">
+    </trim>
+    <trim prefix="SET" suffixOverrides=",">
+    </trim>
+</demo>
+```
+
+其中：
+
++ prefix 表示在trim包括的SQL语句前面添加的指定内容
++ suffix 表示在trim包裹的SQL末尾添加指定内容
++ prefixOverrides 表示去掉（覆盖）trim包裹的SQL的指定首部内容
++ suffixOverrides 表示去掉（覆盖）trim包裹的SQL的指定尾部内容
+
+SQL片段：
+有些时候，可能将一些功能的部分抽取出来方便复用。
+
+foreach：
+
+```sql
+select *
+from user
+where 1 = 1
+  and (id = 1 or id = 2 or id = 3)
+```

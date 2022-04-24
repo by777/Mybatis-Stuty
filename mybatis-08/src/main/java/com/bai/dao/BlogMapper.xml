@@ -3,6 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bai.dao.BlogMapper">
+    <sql id="if-title-author">
+        <if test="title != null">
+            and title=#{title}
+        </if>
+        <if test="author != null">
+            and author=#{author}
+        </if>
+    </sql>
+
     <insert id="addBlog" parameterType="Blog">
         insert into mybatis.blog(id, title, author, create_time, views)
         values (#{id}, #{title}, #{author}, #{create_time}, #{views});
@@ -11,13 +20,9 @@
     <select id="queryBlogIF" parameterType="map" resultType="Blog">
         select *
         from mybatis.blog
-        where true
-        <if test="title != null">
-            and title=#{title}
-        </if>
-        <if test="author != null">
-            and author=#{author}
-        </if>
+        <where>
+            <include refid="if-title-author"/>
+        </where>
     </select>
     <!--choose-when等同于switch-case，单分支-->
     <select id="queryBlogChoose" parameterType="map" resultType="Blog">
@@ -49,6 +54,21 @@
             </if>
         </set>
         where id = #{id};
+
+        <!--        <trim prefix="" prefixOverrides="" suffix="" suffixOverrides="">-->
+
+        <!--        </trim>-->
     </update>
 
+    <!--现在传递一个万能map，这个map中存在一个集合
+    设计的sql为：    select * from mybatis.bolg where 1=1 and (id=1 or id=2 or id=3)-->
+    <select id="queryBlogForeach" parameterType="Map" resultType="Blog">
+        select *
+        from mybatis.blog
+        <where>
+            <foreach collection="ids" item="id" open="and (" close=")" separator="or">
+                id=#{id}
+            </foreach>
+        </where>
+    </select>
 </mapper>

@@ -16,4 +16,8 @@ public interface BlogMapper {
 
     // 更新博客
     int updateBlog(Map map);
+
+    // 查询第1，2，3号记录的博客
+    // 先去把id改为1234
+    List<Blog> queryBlogForeach(Map map);
 }
