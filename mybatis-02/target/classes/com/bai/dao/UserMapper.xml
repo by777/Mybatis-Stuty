@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace bind a DAO/USER interface (same name)-->
+<mapper namespace="com.bai.dao.UserMapper">
+
+    <resultMap id="UserMap" type="User">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pwd" property="password"/>
+    </resultMap>
+
+    <select id="getUserById" parameterType="int" resultMap="UserMap">
+        <!--select *
+        from mybatis.user
+        where id = #{id} -->
+        select id, name, pwd
+        from mybatis.user
+        where id = 1;
+    </select>
+
+
+</mapper>

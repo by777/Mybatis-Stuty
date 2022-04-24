@@ -65,11 +65,11 @@ ResultMap解决属性名于字段名不一致的问题（property-column）
 ```xml
 
 <dependencies>
-   <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-   </dependency>
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.17</version>
+    </dependency>
 </dependencies>
 ```
 
@@ -276,19 +276,19 @@ public class TestBlog {
 ```xml
 
 <select id="queryBlogChoose" parameterType="map" resultType="Blog">
-   select *
-   from mybatis.blog
-   <where>
-      <!--            使用where标签自动去除多余的and，但不主动添加            -->
-      <if test="author!=null">
-         <!--           这里的and会自动去除            -->
-         and title=#{title}
-      </if>
-      <if test="author != null">
-         <!--           这里的and不能省略            -->
-         and author=#{author}
-      </if>
-   </where>
+    select *
+    from mybatis.blog
+    <where>
+        <!--            使用where标签自动去除多余的and，但不主动添加            -->
+        <if test="author!=null">
+            <!--           这里的and会自动去除            -->
+            and title=#{title}
+        </if>
+        <if test="author != null">
+            <!--           这里的and不能省略            -->
+            and author=#{author}
+        </if>
+    </where>
 </select>
 ```
 
@@ -330,13 +330,13 @@ where 1 = 1
 ```xml
 
 <select id="queryBlogForeach" parameterType="Map" resultType="Blog">
-   select *
-   from mybatis.blog
-   <where>
-      <foreach collection="ids" item="id" open="and (" close=")" separator="or">
-         id=#{id}
-      </foreach>
-   </where>
+    select *
+    from mybatis.blog
+    <where>
+        <foreach collection="ids" item="id" open="and (" close=")" separator="or">
+            id=#{id}
+        </foreach>
+    </where>
 </select>
 ```
 
@@ -344,21 +344,21 @@ where 1 = 1
 
 ```java
 public class TestBlog {
-   @Test
-   public void testQueryForeach() {
-      SqlSession sqlSession = MybatisUtils.getSqlSession();
-      BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
-      HashMap map = new HashMap();
-      ArrayList<String> ids = new ArrayList<String>();
-      ids.add("1");
-      ids.add("2");
-      map.put("ids", ids);
-      List<Blog> blogList = blogMapper.queryBlogForeach(map);
-      for (Blog blog : blogList) {
-         System.out.println(blog);
-      }
-      sqlSession.close();
-   }
+    @Test
+    public void testQueryForeach() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+        HashMap map = new HashMap();
+        ArrayList<String> ids = new ArrayList<String>();
+        ids.add("1");
+        ids.add("2");
+        map.put("ids", ids);
+        List<Blog> blogList = blogMapper.queryBlogForeach(map);
+        for (Blog blog : blogList) {
+            System.out.println(blog);
+        }
+        sqlSession.close();
+    }
 }
 ```
 
@@ -408,9 +408,9 @@ public class TestBlog {
 ```xml
 
 <dependency>
-   <groupId>org.mybatis.caches</groupId>
-   <artifactId>mybatis-ehcache</artifactId>
-   <version>1.1.0</version>
+    <groupId>org.mybatis.caches</groupId>
+    <artifactId>mybatis-ehcache</artifactId>
+    <version>1.1.0</version>
 </dependency>
 ```
 
