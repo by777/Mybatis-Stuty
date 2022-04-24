@@ -62,38 +62,43 @@ ResultMap解决属性名于字段名不一致的问题
 
 1. 先导入log4j的包
    在mybatis-04的pom.xml导入依赖
-   ```xml
-   <dependencies>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-   </dependencies>
-   ```
+
+```xml
+
+<dependencies>
+   <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+   </dependency>
+</dependencies>
+```
+
 2. 配置文件：resources/log4j.properties
-   ```properties
-   log4j.rootLogger=DEBUG,console,file
-   # 控制台
-   log4j.appender.console=org.apache.log4j.ConsoleAppender
-   log4j.appender.console.Target=System.out
-   log4j.appender.console.Threshold=DEBUG
-   log4j.appender.console.layout=org.apache.log4j.PatternLayout
-   log4j.appender.console.layout.ConversionPattern=[%c]-%m%n
-   # 文件
-   log4j.appender.file=org.apache.log4j.RollingFileAppender
-   log4j.appender.file.File=./log/bai.log
-   log4j.appender.file.MaxFileSize=10mb
-   log4j.appender.file.Threshold=DEBUG
-   log4j.appender.file.layout=org.apache.log4j.PatternLayout
-   log4j.appender.file.layout.ConversionPattern=[%p]-[%d{yy-MM-dd}][%c]%m%n
-   # 输出级别
-   log4j.logger.org.mybatis=DEBUG
-   log4j.logger.java.sql=DEBUG
-   log4j.logger.java.sql.Statement=DEBUG
-   log4j.logger.java.sql.ResultSet=DEBUG
-   log4j.logger.java.sql.PreparedStatement=DEBUG
-   ```
+
+```properties
+log4j.rootLogger=DEBUG,console,file
+# 控制台
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.Target=System.out
+log4j.appender.console.Threshold=DEBUG
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=[%c]-%m%n
+# 文件
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=./log/bai.log
+log4j.appender.file.MaxFileSize=10mb
+log4j.appender.file.Threshold=DEBUG
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=[%p]-[%d{yy-MM-dd}][%c]%m%n
+# 输出级别
+log4j.logger.org.mybatis=DEBUG
+log4j.logger.java.sql=DEBUG
+log4j.logger.java.sql.Statement=DEBUG
+log4j.logger.java.sql.ResultSet=DEBUG
+log4j.logger.java.sql.PreparedStatement=DEBUG
+```
+
 3. 配置log4j的日志实现（mybatis-config.xml）
    ```xml
 
@@ -223,7 +228,9 @@ CREATE TABLE `blog`
 
 利用java插入数据
 
-```java
+<details>
+<summary>展开查看JAVA代码</summary>
+<pre><code> 
 public class TestBlog {
     @Test
     public void testBlogInsert() {
@@ -258,20 +265,24 @@ public class TestBlog {
         sqlSession.close();
     }
 }
-
-```
+ </code></pre>
+</details>
 
 # P24 动态SQL常用标签
+
+先在Mysql中写出完整的SQL，再去修改成相应的动态SQL实现
+
+利用where标签：
 
 ```xml
 
 <select id="queryBlogChoose" parameterType="map" resultType="Blog">
-    select *
-    from mybatis.blog
-    <where>
-        <!--            使用where标签自动去除多余的and，但不主动添加            -->
-        <if test="author!=null">
-            <!--           这里的and会自动去除            -->
+   select *
+   from mybatis.blog
+   <where>
+      <!--            使用where标签自动去除多余的and，但不主动添加            -->
+      <if test="author!=null">
+         <!--           这里的and会自动去除            -->
             and title=#{title}
         </if>
         <if test="author != null">
@@ -282,7 +293,7 @@ public class TestBlog {
 </select>
 ```
 
-<set><where>都有一个父级元素<trim>，使用trim定制元素的一些功能，
+\<set>\<where>都有一个父级元素\<trim>，使用trim定制元素的一些功能，
 
 ```xml
 
@@ -306,9 +317,89 @@ SQL片段：
 
 foreach：
 
+1. SQL设计：
+
 ```sql
 select *
 from user
 where 1 = 1
   and (id = 1 or id = 2 or id = 3)
+```
+
+2. XML：
+
+```xml
+
+<select id="queryBlogForeach" parameterType="Map" resultType="Blog">
+   select *
+   from mybatis.blog
+   <where>
+      <foreach collection="ids" item="id" open="and (" close=")" separator="or">
+         id=#{id}
+      </foreach>
+   </where>
+</select>
+```
+
+3. JAVA:
+
+```java
+public class TestBlog {
+   @Test
+   public void testQueryForeach() {
+      SqlSession sqlSession = MybatisUtils.getSqlSession();
+      BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+      HashMap map = new HashMap();
+      ArrayList<String> ids = new ArrayList<String>();
+      ids.add("1");
+      ids.add("2");
+      map.put("ids", ids);
+      List<Blog> blogList = blogMapper.queryBlogForeach(map);
+      for (Blog blog : blogList) {
+         System.out.println(blog);
+      }
+      sqlSession.close();
+   }
+}
+```
+
+# P26 缓存
+
+缓存：一次查询的结果，暂存到一个可以直接取到地方。（读走缓存，写不走缓存）。
+
++ Mybatis默认配置了一级缓存和二级缓存。
++ 默认情况下只会开启一句缓存（SqlSession级别的缓存，在open和close之间，也称为本地缓存，关不掉）
++ 二级缓存是基于namespace级别的缓存（一个Mapper接口）
++ 可以通过Mybatis的Cache接口实现自定义二级缓存。
+
+缓存失效的情况：
+
+1. 查询不一样的东西，会走两次sql（也就是说两次查询一个东西，只会走一次sql）
+2. 即使两次查询的同一个用户，中间**只要有**修改操作（不论是否是针对要查询用户的），都会刷新缓存
+3. 查询不一样的mapper.xml（别说一级缓存，二级缓存都失效了）
+4. 手动清除缓存
+   启用二级缓存，只需要在SQL中添加
+
+二级缓存又称全局缓存，
+工作机制：
+
++ 一个会话查询一条数据，这个会话就被放在当前会话的一级缓存中
++ 如果当前会话关闭了，这个会话的一级缓存就没了，但是我们想会话关闭了，一级缓存中的数据被保存在二级缓存中
++ 新的会话查询信息，就可以从二级缓存中获取内容
++ 不同的mapper查询的数据会放在自己对应的缓存中（map）
+
+开启步骤：
+
+1. 核心配置文件全局开启
+
+```xml
+ <!--        显式的开启二级缓存，（默认开启）-->
+<setting name="cacheEnabled" value="true"/>
+```
+
+2. 在mapper.xml中配置标签
+
+```xml
+
+<cache eviction="LRU | FIFO | SOFT | WEAK" flushInterval="60000" size="512" readOnly="true"/>
 ```
